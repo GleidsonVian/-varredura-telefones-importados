@@ -22,8 +22,12 @@ class Varredor_de_celulares():
         while True:
             try:
                 nome_produtos = self.driver.find_elements(By.XPATH, "//div[@class='single-shop-product']//h2")
+                precos = self.driver.find_elements(By.XPATH, "//div[@class='product-carousel-price']//ins")
+               
                 for produto in nome_produtos:
                     self.lista_de_produtos.append(produto.text)
+                for preco in precos:
+                    self.lista_de_precos.append(preco.text)
 
                 botao_proximo = self.driver.find_element(By.XPATH, "//a[@aria-label='Next']")
                 
@@ -37,8 +41,17 @@ class Varredor_de_celulares():
                 break
 
     def exportar_para_excel(self):
-        self.df = pd.DataFrame(self.lista_de_produtos, columns=['Celulares'])
+        if len(self.lista_de_produtos) != len(self.lista_de_precos):
+            print("Erro: Listas de produtos e preços têm tamanhos diferentes")
+            return
+
+        self.df = pd.DataFrame({
+            'Celulares': self.lista_de_produtos,
+            'Preços': self.lista_de_precos
+        })
+        
         self.df.to_excel(r'celulares.xlsx', index=False)
+        print('Dados exportados para Excel')
 
     def enviar_email(self):
         # Cria uma instância do Outlook
