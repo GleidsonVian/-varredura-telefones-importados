@@ -38,7 +38,7 @@ class Varredor_de_celulares():
 
     def exportar_para_excel(self):
         self.df = pd.DataFrame(self.lista_de_produtos, columns=['Celulares'])
-        self.df.to_excel(r'C:\Users\gleid\pasta4\Python\varredura telefones importados\celulares.xlsx', index=False)
+        self.df.to_excel(r'celulares.xlsx', index=False)
 
     def enviar_email(self):
         # Cria uma instância do Outlook
@@ -48,7 +48,7 @@ class Varredor_de_celulares():
         mail = outlook.CreateItem(0)
 
         # Define o destinatário do email
-        mail.To = 'gleidson.testes1@outlook.com'
+        mail.To = 'seuemail@outlook.com'
 
         # Define o assunto do email
         mail.Subject = 'Tabela de Celulares'
@@ -59,7 +59,7 @@ class Varredor_de_celulares():
         <p>Segue a lista de celulares varridos</p>
         {self.df.to_html()}
         """
-        anexo = r"C:\Users\gleid\pasta4\Python\varredura telefones importados\celulares.xlsx"
+        anexo = r"C:caminho do arquivo na sua maquina\celulares.xlsx"
         mail.Attachments.Add(anexo)
         # Envia o email
         mail.Send()
